@@ -2,15 +2,20 @@
 
 if [[ ! "$1" ]]; then
 
-    TMP=/tmp/scan1.png
+    INPUT=/tmp/scan-input.png
+    PROCESSED=/tmp/scan-output.png
 
-    echo Use mouse select an area on screen to decode QR
+    echo Use mouse select an area on screen, then press enter, to decode QR.
     echo ""
 
-    spectacle -b -r -n -o $TMP
-    OUTPUT=$(echo $(zbarimg -q $TMP) | sed 's/^.*Code://')
-    xdg-open $OUTPUT
+    spectacle -b -r -n -o $INPUT
+    convert $INPUT +dither  -colors 2  -colorspace gray -normalize $PROCESSED
+    OUTPUT=$(echo $(zbarimg -q $PROCESSED) | sed 's/^.*Code://')
     echo $OUTPUT
+    if [[ "$OUTPUT" == "https"* || "$OUTPUT" == "http"* ]]; then
+        echo "Opening Link..."
+        xdg-open $OUTPUT
+    fi
 
 else
     qrencode -m 2 -t ANSIUTF8 "$1"
