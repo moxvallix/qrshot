@@ -29,8 +29,8 @@ $ qrshot gen "Sample string"
 ```
 ![encoding screenshot](encode.png)
 
-<string>: Text, in quotes, to encode
-<location>: Location of the directory to store the image. The image is named after the date / time. Defaults to ~/Pictures.
+\<string\>: Text, in quotes, to encode  
+\<location\>: Location of the directory to store the image. Defaults to ~/Pictures. The image is named after the date / time.
 
 ## Dependencies
 
