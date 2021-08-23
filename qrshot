@@ -2,13 +2,15 @@
 
 if [[ ! "$1" ]]; then
 
-    TMPDIR=/dev/shm
-    cd "$TMPDIR"
+    TMP=/tmp/scan1.png
 
     echo Use mouse select an area on screen to decode QR
     echo ""
 
-    scrot -s -e 'echo Image size $w x $h ; echo "" ; zbarimg "$f" ; rm  "$f" '
+    spectacle -b -r -n -o $TMP
+    OUTPUT=$(echo $(zbarimg -q $TMP) | sed 's/^.*Code://')
+    xdg-open $OUTPUT
+    echo $OUTPUT
 
 else
     qrencode -m 2 -t ANSIUTF8 "$1"
