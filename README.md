@@ -7,20 +7,20 @@ However, much of the current code within the script is by Moxvallix.
 As the previous script was open source, but lacked a license, I am releasing my script under the GPLv3.
 
 ## Usage
-
-qrshot grab                           - opens screenshot dialog and scans qr code
-       grab open                      - opens screenshot dialog and scans qr code, opening any URLs
-       grab clip                      - opens screenshot dialog and scans qr code, copying it to clipboard
-qrshot read <location>                - scans qr code from file
-       read open <location>           - scans qr code from file, opening any URLs
-       read clip <location>           - scans qr code from file, copying it to clipboard
-qrshot gen <string>                   - generates a qr code from a string
-       gen img <string> <location>    - generates a qr code from a string, saving it as a png in ~/Pictures, or to specified location
-       gen clip <string>              - generates a qr code from a string, saving it as a png and copying it to the clipboard
-qrshot clip                           - generates a qr code from the clipboard
-       clip img <location>            - generates a qr code from the clipboard, and saves the png image to ~/Pictures, or the specified location
-       clip copy                      - generates a qr code from the clipboard, saving it as a png and copying it to the clipboard
-
+```
+qrshot grab                        - opens screenshot dialog and scans qr code
+       grab open                   - opens screenshot dialog and scans qr code, opening any URLs
+       grab clip                   - opens screenshot dialog and scans qr code, copying it to clipboard
+qrshot read <location>             - scans qr code from file
+       read open <location>        - scans qr code from file, opening any URLs
+       read clip <location>        - scans qr code from file, copying it to clipboard
+qrshot gen <string>                - generates a qr code from a string
+       gen img <string> <location> - generates a qr code from a string, saving it as a png in ~/Pictures, or to specified location
+       gen clip <string>           - generates a qr code from a string, saving it as a png and copying it to the clipboard
+qrshot clip                        - generates a qr code from the clipboard
+       clip img <location>         - generates a qr code from the clipboard, and saves the png image to ~/Pictures, or the specified location
+       clip copy                   - generates a qr code from the clipboard, saving it as a png and copying it to the clipboard
+```
 
 ### Encode
 
