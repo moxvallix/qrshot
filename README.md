@@ -15,10 +15,10 @@ qrshot read <location>             - scans qr code from file
        read open <location>        - scans qr code from file, opening any URLs
        read clip <location>        - scans qr code from file, copying it to clipboard
 qrshot gen <string>                - generates a qr code from a string
-       gen img <string> <location> - generates a qr code from a string, saving it as a png in ~/Pictures, or to specified location
+       gen img <string> <location> - generates a qr code from a string, saving it as a png in the current directory, or to specified location
        gen clip <string>           - generates a qr code from a string, saving it as a png and copying it to the clipboard
 qrshot clip                        - generates a qr code from the clipboard
-       clip img <location>         - generates a qr code from the clipboard, and saves the png image to ~/Pictures, or the specified location
+       clip img <location>         - generates a qr code from the clipboard, and saves the png image to the current directory, or the specified location
        clip copy                   - generates a qr code from the clipboard, saving it as a png and copying it to the clipboard
 ```
 
@@ -30,7 +30,7 @@ $ qrshot gen "Sample string"
 ![encoding screenshot](encode.png)
 
 \<string\>: Text, in quotes, to encode  
-\<location\>: Location of the directory to store the image. Defaults to ~/Pictures. The image is named after the date / time.
+\<location\>: Location of the directory to store the image. Defaults to the current directory. The image is named after the date / time.
 
 ## Dependencies
 
