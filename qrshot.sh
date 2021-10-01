@@ -16,6 +16,9 @@ esac
 scan_qr () {
     convert $INPUT +dither  -colors 2  -colorspace gray -normalize $PROCESSED
     OUTPUT=$(echo $(zbarimg -q $PROCESSED) | sed 's/^.*Code://')
+    if [[ $OUTPUT == "" ]]; then
+        OUTPUT="Unable to read QR code"
+    fi
 }
 
 if [[ ! "$1" || "$1" == "grab" ]]; then
