@@ -14,10 +14,14 @@ esac
 
 # SCAN FUNCTION
 scan_qr () {
-    convert $INPUT +dither  -colors 2  -colorspace gray -normalize $PROCESSED
+    convert $INPUT -fill white -fuzz 10% +opaque "#000000" $PROCESSED
     OUTPUT=$(echo $(zbarimg -q $PROCESSED) | sed 's/^.*Code://')
     if [[ $OUTPUT == "" ]]; then
-        OUTPUT="Unable to read QR code"
+        convert $INPUT +dither  -colors 2  -colorspace gray -normalize $PROCESSED
+        OUTPUT=$(echo $(zbarimg -q $PROCESSED) | sed 's/^.*Code://')
+        if [[ $OUTPUT == "" ]]; then
+            OUTPUT="Unable to read QR code"
+        fi
     fi
 }
 
