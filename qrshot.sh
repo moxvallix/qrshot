@@ -21,6 +21,9 @@ scan_qr () {
         OUTPUT=$(echo $(zbarimg -q $PROCESSED) | sed 's/^.*Code://')
         if [[ $OUTPUT == "" ]]; then
             OUTPUT="Unable to read QR code"
+            if [[ $FG == 0 ]]; then
+                notify-send "QR Code Output:" "$OUTPUT" --icon=dialog-information
+            fi
         fi
     fi
 }
