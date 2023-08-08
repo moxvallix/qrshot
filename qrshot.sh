@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # VARIABLES
-PROCESSED=/tmp/scan-output.png
+PROCESSED=$TMP/scan-output.png
+OCR_TMP=$TMP/ocr-output
 DATE=$(date "+%F-%H-%M-%S")
 CLIP=$(xclip -o -selection clipboard)
 DIR=$(pwd)
@@ -12,12 +13,22 @@ case $(ps -o stat= -p $$) in
 esac
 
 
+# PROCESS IMAGE TYPE 1
+process_img_type1 () {
+    convert $INPUT -fill white -fuzz 10% +opaque "#000000" $PROCESSED
+}
+
+# PROCESS IMAGE TYPE 2
+process_img_type2 () {
+    convert $INPUT +dither  -colors 2  -colorspace gray -normalize $PROCESSED
+}
+
 # SCAN FUNCTION
 scan_qr () {
-    convert $INPUT -fill white -fuzz 10% +opaque "#000000" $PROCESSED
+    process_img_type1
     OUTPUT=$(echo $(zbarimg -q $PROCESSED) | sed 's/^.*Code://')
     if [[ $OUTPUT == "" ]]; then
-        convert $INPUT +dither  -colors 2  -colorspace gray -normalize $PROCESSED
+        process_img_type2
         OUTPUT=$(echo $(zbarimg -q $PROCESSED) | sed 's/^.*Code://')
         if [[ $OUTPUT == "" ]]; then
             OUTPUT="Unable to read QR code"
@@ -28,9 +39,15 @@ scan_qr () {
     fi
 }
 
+image_ocr () {
+    PROCESSED=$INPUT
+    tesseract $PROCESSED $OCR_TMP
+    OUTPUT=$(cat $OCR_TMP.txt)
+}
+
 if [[ ! "$1" || "$1" == "grab" ]]; then
 
-    INPUT=/tmp/scan-input.png
+    INPUT=$TMP/scan-input.png
     echo Use mouse select an area on screen, then press enter, to decode QR.
     echo ""
 
@@ -134,6 +151,32 @@ elif [[ "$1" == "clip" ]]; then
     else
         qrencode -m 2 -t ANSIUTF8 "$CLIP"
     fi
+elif [[ "$1" == "ocr" ]]; then
+    INPUT=$TMP/scan-input.png
+    spectacle -b -r -n -o $INPUT
+    image_ocr
+
+    if [[ "$2" == "open" ]]; then
+        if [[ "$OUTPUT" == "https"* || "$OUTPUT" == "http"* ]]; then
+            echo "Opening Link..."
+            xdg-open $OUTPUT
+        else
+            echo "QR scanned did not contain a URL"
+            if [[ $FG == 0 ]]; then
+                notify-send 'QR Code Error:' "QR scanned did not contain a URL" --icon=dialog-information
+            fi
+        fi
+    elif [[ "$2" == "clip" ]]; then
+        echo $OUTPUT | xclip -selection clipboard -i
+        if [[ $FG == 0 ]]; then
+            notify-send 'OCR Output:' "Text Copied to Clipboard" --icon=dialog-information
+        fi
+    else
+        echo $OUTPUT
+        if [[ $FG == 0 ]]; then
+            notify-send "OCR Output:" "$OUTPUT" --icon=dialog-information
+        fi
+    fi
 else
     echo "QRShot QR code scanner / creator"
     echo "Usage:"
@@ -149,4 +192,7 @@ else
     echo "qrshot clip                           - generates a qr code from the clipboard"
     echo "       clip img <location>            - generates a qr code from the clipboard, and saves the png image to the current directory, or the specified location"
     echo "       clip copy                      - generates a qr code from the clipboard, saving it as a png and copying it to the clipboard"
+    echo "qrshot ocr                            - opens screenshot dialog and scans text"
+    echo "qrshot ocr open                       - opens screenshot dialog and scans text, opening any URLs"
+    echo "qrshot ocr clip                       - opens screenshot dialog and scans text, copying it to clipboard"
 fi

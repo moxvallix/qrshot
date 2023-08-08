@@ -9,7 +9,7 @@ arch=("any")
 url="https://github.com/moxvallix/qrshot"
 license=("GPL3")
 
-depends=("imagemagick" "spectacle" "zbar" "qrencode" "xclip" "libnotify")
+depends=("imagemagick" "spectacle" "zbar" "qrencode" "xclip" "libnotify" "tesseract")
 makedepends=("git")
 
 source=(
