@@ -1,6 +1,9 @@
 #!/bin/bash
 
 # VARIABLES
+if [[ $TMP == "" ]]; then
+    TMP=/tmp
+fi
 PROCESSED=$TMP/scan-output.png
 OCR_TMP=$TMP/ocr-output
 DATE=$(date "+%F-%H-%M-%S")
